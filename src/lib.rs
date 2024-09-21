@@ -55,7 +55,7 @@ impl StableAnyTrait for dyn StableAny {
     }
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Hash, PartialEq, Eq)]
 pub struct StableId(pub u64);
 impl PartialEq for StableId {
     fn eq(&self, other: &Self) -> bool {
