@@ -71,6 +71,10 @@ impl Display for StableId {
     }
 }
 
+impl StableID for () {
+    const _STABLE_ID: &'static StableId = &StableId(0);
+}
+
 #[cfg(test)]
 mod tests {
     use crate as stable_typeid;

@@ -12,3 +12,5 @@ repository = "https://github.com/BERADQ/stable-typeid"
 serde = "1.0.195"
 stable-typeid-macro = { version = "0.0.1", path = "./stable-typeid-macro" }
 toml = "0.8.8"
+[toolchain]
+channel = "nightly"
