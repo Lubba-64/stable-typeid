@@ -75,6 +75,61 @@ impl StableID for () {
     const _STABLE_ID: &'static StableId = &StableId(0);
 }
 
+impl StableID for bool {
+    const _STABLE_ID: &'static StableId = &StableId(1);
+}
+impl StableID for char {
+    const _STABLE_ID: &'static StableId = &StableId(2);
+}
+impl StableID for u8 {
+    const _STABLE_ID: &'static StableId = &StableId(3);
+}
+impl StableID for u16 {
+    const _STABLE_ID: &'static StableId = &StableId(4);
+}
+impl StableID for u32 {
+    const _STABLE_ID: &'static StableId = &StableId(5);
+}
+impl StableID for u64 {
+    const _STABLE_ID: &'static StableId = &StableId(6);
+}
+impl StableID for u128 {
+    const _STABLE_ID: &'static StableId = &StableId(7);
+}
+impl StableID for usize {
+    const _STABLE_ID: &'static StableId = &StableId(8);
+}
+impl StableID for i8 {
+    const _STABLE_ID: &'static StableId = &StableId(9);
+}
+impl StableID for i16 {
+    const _STABLE_ID: &'static StableId = &StableId(10);
+}
+impl StableID for i32 {
+    const _STABLE_ID: &'static StableId = &StableId(11);
+}
+impl StableID for i64 {
+    const _STABLE_ID: &'static StableId = &StableId(12);
+}
+impl StableID for i128 {
+    const _STABLE_ID: &'static StableId = &StableId(13);
+}
+impl StableID for isize {
+    const _STABLE_ID: &'static StableId = &StableId(14);
+}
+impl StableID for f32 {
+    const _STABLE_ID: &'static StableId = &StableId(15);
+}
+impl StableID for f64 {
+    const _STABLE_ID: &'static StableId = &StableId(16);
+}
+impl StableID for String {
+    const _STABLE_ID: &'static StableId = &StableId(17);
+}
+impl StableID for &str {
+    const _STABLE_ID: &'static StableId = &StableId(18);
+}
+
 #[cfg(test)]
 mod tests {
     use crate as stable_typeid;
