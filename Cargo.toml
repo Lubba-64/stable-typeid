@@ -1,5 +1,5 @@
 [workspace]
-members = ["stable-typeid-macro"]
+members = ["stable-typeid-macro", "impl-stable-id-macro", "impl-stable-id-macro-array"]
 [package]
 name = "stable-typeid"
 version = "0.0.6"
@@ -12,6 +12,7 @@ repository = "https://github.com/BERADQ/stable-typeid"
 const-fnv1a-hash = "1.1.0"
 serde = "1.0.195"
 stable-typeid-macro = { version = "0.0.1", path = "./stable-typeid-macro" }
+impl-stable-id-macro = { version = "0.0.1", path = "./impl-stable-id-macro" }
 toml = "0.8.8"
 [toolchain]
 channel = "nightly"

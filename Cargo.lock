@@ -21,6 +21,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "290f1a1d9242c78d09ce40a5e87e7554ee637af1351968159f4952f028f75604"
 
 [[package]]
+name = "impl-stable-id-macro"
+version = "0.0.1"
+dependencies = [
+ "const-fnv1a-hash",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "impl-stable-id-macro-array"
+version = "0.0.1"
+dependencies = [
+ "const-fnv1a-hash",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "indexmap"
 version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -88,6 +108,7 @@ name = "stable-typeid"
 version = "0.0.6"
 dependencies = [
  "const-fnv1a-hash",
+ "impl-stable-id-macro",
  "serde",
  "stable-typeid-macro",
  "toml",

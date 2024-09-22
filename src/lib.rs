@@ -1,5 +1,6 @@
 #![feature(const_type_name)]
 use const_fnv1a_hash::fnv1a_hash_64;
+use impl_stable_id_macro::*;
 pub use stable_typeid_macro::*;
 use std::{any::type_name, fmt::Display};
 
@@ -148,6 +149,14 @@ impl_with_type_name_tuple!(T, T1, T2, T3, T4, T5, T6, T7, T8);
 impl_with_type_name_tuple!(T, T1, T2, T3, T4, T5, T6, T7, T8, T9);
 impl_with_type_name_tuple!(T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10);
 impl_with_type_name_tuple!(T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11);
+stable_id_impl!(std::collections::HashMap<K, V>);
+stable_id_impl!(std::vec::Vec<T>);
+stable_id_impl!(Option<T>);
+
+impl<T, const N: usize> StableID for [T; N] {
+    const _STABLE_ID: &'static StableId =
+        &StableId(fnv1a_hash_64(type_name::<T>().as_bytes(), None) ^ N as u64);
+}
 
 #[cfg(test)]
 mod tests {
@@ -158,6 +167,7 @@ mod tests {
         let any = MyStruct {
             anything: "Hello TypeId".to_string(),
         };
+
         foo(&any);
     }
     fn foo(any: &dyn StableAny) {
