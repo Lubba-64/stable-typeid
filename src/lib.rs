@@ -1,6 +1,7 @@
-use std::fmt::Display;
-
+#![feature(const_type_name)]
+use const_fnv1a_hash::fnv1a_hash_64;
 pub use stable_typeid_macro::*;
+use std::{any::type_name, fmt::Display};
 
 pub trait StableAny: 'static {
     fn stable_id(&self) -> &'static StableId;
@@ -71,64 +72,82 @@ impl Display for StableId {
     }
 }
 
-impl StableID for () {
-    const _STABLE_ID: &'static StableId = &StableId(0);
+pub fn get_pkg_name() -> String {
+    let env = std::env::var("CARGO_PKG_NAME");
+    env.unwrap_or("".to_string())
 }
 
-impl StableID for bool {
-    const _STABLE_ID: &'static StableId = &StableId(1);
+macro_rules! impl_with_type_name {
+    ($name:ident) => {
+        impl StableAny for $name {
+            fn stable_id(&self) -> &'static StableId
+            where
+                Self: Sized,
+            {
+                $name::_STABLE_ID
+            }
+        }
+
+        impl StableID for $name {
+            const _STABLE_ID: &'static StableId =
+                &StableId(fnv1a_hash_64(type_name::<$name>().as_bytes(), None));
+        }
+    };
 }
-impl StableID for char {
-    const _STABLE_ID: &'static StableId = &StableId(2);
+
+macro_rules! impl_with_type_name_tuple {
+    (()) => {
+        impl StableID for () {
+            const _STABLE_ID: &'static StableId =
+                &StableId(fnv1a_hash_64(type_name::<()>().as_bytes(), None));
+        }
+    };
+
+    ($param:ident) => {
+        impl <$param: StableID> StableID for ($param,) {
+            const _STABLE_ID: &'static StableId =
+                &StableId(fnv1a_hash_64(type_name::<($param,)>().as_bytes(), None));
+        }
+    };
+
+    ($last:ident $(,$param:ident)*) => {
+        impl <$($param: StableID,)* $last: StableID> StableID for ($($param,)* $last) {
+            const _STABLE_ID: &'static StableId =
+                &StableId(fnv1a_hash_64(type_name::<($($param,)*)>().as_bytes(), None));
+        }
+    };
 }
-impl StableID for u8 {
-    const _STABLE_ID: &'static StableId = &StableId(3);
-}
-impl StableID for u16 {
-    const _STABLE_ID: &'static StableId = &StableId(4);
-}
-impl StableID for u32 {
-    const _STABLE_ID: &'static StableId = &StableId(5);
-}
-impl StableID for u64 {
-    const _STABLE_ID: &'static StableId = &StableId(6);
-}
-impl StableID for u128 {
-    const _STABLE_ID: &'static StableId = &StableId(7);
-}
-impl StableID for usize {
-    const _STABLE_ID: &'static StableId = &StableId(8);
-}
-impl StableID for i8 {
-    const _STABLE_ID: &'static StableId = &StableId(9);
-}
-impl StableID for i16 {
-    const _STABLE_ID: &'static StableId = &StableId(10);
-}
-impl StableID for i32 {
-    const _STABLE_ID: &'static StableId = &StableId(11);
-}
-impl StableID for i64 {
-    const _STABLE_ID: &'static StableId = &StableId(12);
-}
-impl StableID for i128 {
-    const _STABLE_ID: &'static StableId = &StableId(13);
-}
-impl StableID for isize {
-    const _STABLE_ID: &'static StableId = &StableId(14);
-}
-impl StableID for f32 {
-    const _STABLE_ID: &'static StableId = &StableId(15);
-}
-impl StableID for f64 {
-    const _STABLE_ID: &'static StableId = &StableId(16);
-}
-impl StableID for String {
-    const _STABLE_ID: &'static StableId = &StableId(17);
-}
-impl StableID for &str {
-    const _STABLE_ID: &'static StableId = &StableId(18);
-}
+
+impl_with_type_name!(bool);
+impl_with_type_name!(char);
+impl_with_type_name!(u8);
+impl_with_type_name!(u16);
+impl_with_type_name!(u32);
+impl_with_type_name!(u64);
+impl_with_type_name!(u128);
+impl_with_type_name!(usize);
+impl_with_type_name!(i8);
+impl_with_type_name!(i16);
+impl_with_type_name!(i32);
+impl_with_type_name!(i64);
+impl_with_type_name!(i128);
+impl_with_type_name!(isize);
+impl_with_type_name!(f32);
+impl_with_type_name!(f64);
+impl_with_type_name!(String);
+impl_with_type_name_tuple!(());
+impl_with_type_name_tuple!(T);
+impl_with_type_name_tuple!(T, T1);
+impl_with_type_name_tuple!(T, T1, T2);
+impl_with_type_name_tuple!(T, T1, T2, T3);
+impl_with_type_name_tuple!(T, T1, T2, T3, T4);
+impl_with_type_name_tuple!(T, T1, T2, T3, T4, T5);
+impl_with_type_name_tuple!(T, T1, T2, T3, T4, T5, T6);
+impl_with_type_name_tuple!(T, T1, T2, T3, T4, T5, T6, T7);
+impl_with_type_name_tuple!(T, T1, T2, T3, T4, T5, T6, T7, T8);
+impl_with_type_name_tuple!(T, T1, T2, T3, T4, T5, T6, T7, T8, T9);
+impl_with_type_name_tuple!(T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10);
+impl_with_type_name_tuple!(T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11);
 
 #[cfg(test)]
 mod tests {
