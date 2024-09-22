@@ -2,7 +2,7 @@
 #![feature(proc_macro_def_site)]
 use proc_macro::TokenStream;
 use quote::{quote, ToTokens};
-use syn::{parse_macro_input, Data, DataStruct, DeriveInput, Fields};
+use syn::{parse_macro_input, Data, DataStruct, DeriveInput, Fields, Ident};
 mod util;
 use util::*;
 
@@ -25,7 +25,23 @@ pub fn sort(_attr: TokenStream, item: TokenStream) -> TokenStream {
                 }
             }
         }
-        Data::Struct(_) => panic!("Expected named fields"),
+        Data::Struct(DataStruct {
+            fields: Fields::Unnamed(fields),
+            ..
+        }) => {
+            let mut unnamed_fields: Vec<_> = fields
+                .unnamed
+                .iter()
+                .enumerate()
+                .map(|(i, _)| i.to_string())
+                .collect();
+            unnamed_fields.sort_by_key(|f| hash(&f));
+            quote! {
+                #vis struct #name #generics {
+                    #(#unnamed_fields),*
+                }
+            }
+        }
         Data::Enum(data) => {
             let mut variants: Vec<_> = data.variants.iter().collect();
             variants.sort_by_key(|v| hash(&v.ident.to_string()));
@@ -66,7 +82,14 @@ pub fn stable_id(input: TokenStream) -> TokenStream {
                 let type_str_list: Vec<String> = fields
                     .unnamed
                     .iter()
-                    .map(|f| f.ident.clone().unwrap().to_string())
+                    .enumerate()
+                    .map(|(i, f)| {
+                        f.ident
+                            .clone()
+                            .map(|x| x.to_string())
+                            .unwrap_or(i.to_string())
+                            .to_string()
+                    })
                     .collect();
                 format!("struct~{}({})", name.to_string(), type_str_list.join(","))
             }
