@@ -31,16 +31,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "impl-stable-id-macro-array"
-version = "0.0.1"
-dependencies = [
- "const-fnv1a-hash",
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
 name = "indexmap"
 version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"

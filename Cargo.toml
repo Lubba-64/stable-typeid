@@ -1,5 +1,5 @@
 [workspace]
-members = ["stable-typeid-macro", "impl-stable-id-macro", "impl-stable-id-macro-array"]
+members = ["stable-typeid-macro", "impl-stable-id-macro"]
 [package]
 name = "stable-typeid"
 version = "0.0.6"
