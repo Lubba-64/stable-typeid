@@ -2,7 +2,7 @@
 members = ["stable-typeid-macro"]
 [package]
 name = "stable-typeid"
-version = "0.0.5"
+version = "0.0.6"
 edition = "2021"
 description = "Generate a stable type identifier for rust structs and enums"
 license-file = "LICENSE"
