@@ -2,7 +2,7 @@
 members = ["stable-typeid-macro", "impl-stable-id-macro"]
 [package]
 name = "stable-typeid"
-version = "0.0.7"
+version = "0.0.8"
 edition = "2021"
 description = "Generate a stable type identifier for rust structs and enums"
 license-file = "LICENSE"
@@ -14,5 +14,6 @@ serde = "1.0.195"
 stable-typeid-macro = { version = "0.0.1", path = "./stable-typeid-macro" }
 impl-stable-id-macro = { version = "0.0.1", path = "./impl-stable-id-macro" }
 toml = "0.8.8"
+const_format = "0.2.33"
 [toolchain]
 channel = "nightly"

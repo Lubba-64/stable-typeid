@@ -1,9 +1,10 @@
 #![feature(const_type_name)]
+#![feature(const_trait_impl)]
 use const_fnv1a_hash::fnv1a_hash_64;
-use impl_stable_id_macro::*;
-pub use stable_typeid_macro::*;
+pub use impl_stable_id_macro::stable_id_impl;
+pub use stable_typeid_macro::stable_sorted_type;
+pub use stable_typeid_macro::StableID;
 use std::{any::type_name, fmt::Display};
-
 pub trait StableAny: 'static {
     fn stable_id(&self) -> &'static StableId;
 }
@@ -100,7 +101,7 @@ macro_rules! impl_with_type_name_tuple {
     (()) => {
         impl StableID for () {
             const _STABLE_ID: &'static StableId =
-                &StableId(fnv1a_hash_64(type_name::<()>().as_bytes(), None));
+                &StableId(fnv1a_hash_64(const_format::concatcp!("{0}{1}", env!("CARGO_PKG_VERSION"), type_name::<()>()).as_bytes(), None));
         }
     };
 
